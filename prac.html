@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MPC Practice Tests</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fce4ec);
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #f8f0f6;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px #fff;
+    }
+    .card {
+      max-width: 650px;
+      background: linear-gradient(to bottom right, #ffffff, #f3e5f5);
+      margin: 20px auto;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    label {
+      font-weight: bold;
+      color: #4e342e;
+    }
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      background: linear-gradient(to right, #ff4081, #f50057);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      background: linear-gradient(to right, #f50057, #c51162);
+    }
+    .options label {
+      background: #e1bee7;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 6px;
+      display: block;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .options label:hover {
+      background: #ce93d8;
+    }
+    .result {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.2em;
+    }
+    body {
+  /* background image */
+  background-image: url("https://as2.ftcdn.net/jpg/02/10/61/87/1000_F_210618714_u6VAPB1UEYSisqMzQAJomasWDM2Ae4uO.jpg");
+
+  /* make it cover whole viewport, keep center, no repeat */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  /* optional: keep background fixed when scrolling */
+  background-attachment: fixed;
+
+  /* make sure text is readable */
+  color: #111; /* adjust if text blends too much with background */
+}
+  </style>
+</head>
+<body>
+  <h1>🌟 MPC Practice Tests 🌟</h1>
+  <div class="card">
+    <label for="subject">Select Subject:</label>
+    <select id="subject">
+      <option value="">--Choose--</option>
+      <option value="Maths">Maths</option>
+      <option value="Physics">Physics</option>
+      <option value="Chemistry">Chemistry</option>
+    </select>
+
+    <label for="topic">Select Topic:</label>
+    <select id="topic"></select>
+
+    <label for="test">Select Test:</label>
+    <select id="test"></select>
+
+    <button onclick="loadQuestion()"> Start Test</button>
+  </div>
+
+  <div class="card" id="questionCard" style="display:none;">
+    <h3 id="question"></h3>
+    <div class="options" id="options"></div>
+    <button onclick="checkAnswer()">Submit</button>
+    <p class="result" id="result"></p>
+  </div>
+
+  <script>
+    const data = {
+      "Maths": {
+        "Algebra": [
+          {q: "Solve: 2x + 3 = 7", options: ["x=1", "x=2", "x=3"], ans: "x=2"},
+          {q: "Simplify: (x+2)(x+3)", options: ["x²+5x+6", "x²+6", "x²+3x+2"], ans: "x²+5x+6"}
+        ],
+        "Calculus": [
+          {q: "Derivative of x² is?", options: ["2x", "x", "x²"], ans: "2x"},
+          {q: "∫ dx/x = ?", options: ["ln|x|+C", "x²/2", "1/x"], ans: "ln|x|+C"}
+        ]
+      },
+      "Physics": {
+        "Mechanics": [
+          {q: "Unit of Force?", options: ["Newton", "Joule", "Pascal"], ans: "Newton"},
+          {q: "g on Earth is?", options: ["9.8 m/s²", "10 m/s", "8 m/s²"], ans: "9.8 m/s²"}
+        ],
+        "Optics": [
+          {q: "Speed of light?", options: ["3×10⁸ m/s", "1.5×10⁸ m/s", "3×10⁶ m/s"], ans: "3×10⁸ m/s"},
+          {q: "Lens formula?", options: ["1/f=1/v+1/u", "F=ma", "V=IR"], ans: "1/f=1/v+1/u"}
+        ]
+      },
+      "Chemistry": {
+        "Organic": [
+          {q: "CH₄ is?", options: ["Methane", "Ethane", "Butane"], ans: "Methane"},
+          {q: "Alcohol functional group?", options: ["-OH", "-COOH", "-NH₂"], ans: "-OH"}
+        ],
+        "Inorganic": [
+          {q: "Atomic number of Oxygen?", options: ["6", "8", "10"], ans: "8"},
+          {q: "HCl is?", options: ["Acid", "Base", "Salt"], ans: "Acid"}
+        ]
+      }
+    };
+
+    const subjectSelect = document.getElementById("subject");
+    const topicSelect = document.getElementById("topic");
+    const testSelect = document.getElementById("test");
+    const questionCard = document.getElementById("questionCard");
+    const questionText = document.getElementById("question");
+    const optionsDiv = document.getElementById("options");
+    const resultText = document.getElementById("result");
+
+    subjectSelect.addEventListener("change", () => {
+      topicSelect.innerHTML = "";
+      testSelect.innerHTML = "";
+      if(subjectSelect.value) {
+        Object.keys(data[subjectSelect.value]).forEach(topic => {
+          let opt = document.createElement("option");
+          opt.value = topic;
+          opt.textContent = topic;
+          topicSelect.appendChild(opt);
+        });
+      }
+    });
+
+    topicSelect.addEventListener("change", () => {
+      testSelect.innerHTML = "";
+      if(subjectSelect.value && topicSelect.value) {
+        data[subjectSelect.value][topicSelect.value].forEach((_, index) => {
+          let opt = document.createElement("option");
+          opt.value = index;
+          opt.textContent = "Test " + (index+1);
+          testSelect.appendChild(opt);
+        });
+      }
+    });
+
+    function loadQuestion() {
+      if(!subjectSelect.value || !topicSelect.value || !testSelect.value) {
+        alert("Please select all fields!");
+        return;
+      }
+      const qObj = data[subjectSelect.value][topicSelect.value][testSelect.value];
+      questionCard.style.display = "block";
+      questionText.textContent = qObj.q;
+      optionsDiv.innerHTML = "";
+      qObj.options.forEach(opt => {
+        const lbl = document.createElement("label");
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "option";
+        radio.value = opt;
+        lbl.appendChild(radio);
+        lbl.appendChild(document.createTextNode(" " + opt));
+        optionsDiv.appendChild(lbl);
+      });
+      resultText.textContent = "";
+    }
+
+    function checkAnswer() {
+      const qObj = data[subjectSelect.value][topicSelect.value][testSelect.value];
+      const selected = document.querySelector('input[name="option"]:checked');
+      if(!selected) {
+        alert("Please choose an option!");
+        return;
+      }
+      if(selected.value === qObj.ans) {
+        resultText.textContent = "✅ Correct!";
+        resultText.style.color = "#2e7d32";
+      } else {
+        resultText.textContent = "❌ Wrong! Correct Answer: " + qObj.ans;
+        resultText.style.color = "#c62828";
+      }
+    }
+  </script>
+</body>
+</html>

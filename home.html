@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Learn - Home</title>
+  <link href="dI.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      color: #333;
+    }
+
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+    }
+
+    nav .logo-text {
+      font-size: 20px;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #667eea;
+    }
+
+    .hero {
+      height: 100vh;
+      background: url("https://www.acadecraft.com/blog/uploads/blog/2023/04/digital-education-tools-for-teachers-and-studentswebp.webp") no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    }
+
+    .hero p {
+      font-size: 20px;
+      max-width: 700px;
+      line-height: 1.5;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    }
+
+    .content {
+      padding: 80px 40px;
+      max-width: 1100px;
+      margin: auto;
+      line-height: 1.8;
+    }
+
+    .content h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav>
+            <a href="dl.html" class="logo">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1"></stop>
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1"></stop>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient)" stroke-width="2"></circle>
+                    <circle cx="20" cy="20" r="14" fill="none" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.7"></circle>
+                    <circle cx="20" cy="20" r="10" fill="none" stroke="url(#logoGradient)" stroke-width="1" opacity="0.5"></circle>
+                    <circle cx="20" cy="20" r="6" fill="none" stroke="url(#logoGradient)" stroke-width="0.5" opacity="0.3"></circle>
+                    <circle cx="20" cy="20" r="3" fill="url(#logoGradient)"></circle>
+                </svg>
+                <span class="logo-text">Digital Learn</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="" class="nav-link active">Home</a></li>
+                <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+                <li><a href="prac.html" class="nav-link">Practices</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+  </section>
+
+  <!-- Content Section -->
+  <section class="content">
+    <h2>Empowering Learning Through Technology</h2>
+    <p>Digital education tools provide teachers and students with interactive resources, personalized learning, and innovative methods to make education more engaging and effective. From online quizzes to practice sessions, these tools support learners of all levels in achieving their academic goals.</p>
+
+    <h2>Why Choose Digital Education?</h2>
+    <p>In today’s fast-paced world, technology in education has become a necessity. With digital tools, teachers can create collaborative classrooms, and students can access resources anytime, anywhere. This flexibility bridges learning gaps and enhances productivity.</p>
+
+    <h2>Start Your Journey</h2>
+    <p>Explore quizzes, practice materials, and interactive resources tailored to help you succeed. Together, let’s build a smarter way to learn.</p>
+  </section>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url("https://files.codingninjas.in/article_images/m-them-tic-l-logic-1-0-1650178033.webp") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+
+        /* Navbar */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+        nav .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+            margin-left: 10px;
+        }
+
+        nav .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #667eea;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            border-radius: 2px;
+        }
+
+        @media(max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: #fff;
+                position: absolute;
+                top: 60px;
+                right: 40px;
+                padding: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+        }
+
+        /* Dashboard styles */
+        main {
+            padding: 100px 20px 40px;
+            /* push content below navbar */
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            background: #342ca0;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            margin: 0 0 20px;
+            border-radius: 8px;
+        }
+
+        section {
+            background: #fff;
+            padding: 15px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #333;
+            color: #fff;
+        }
+
+        input,
+        button {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #28a745;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        .alert {
+            background: #dc3545;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <nav>
+            <a href="home.html" class="logo">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1"></stop>
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1"></stop>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient)" stroke-width="2"></circle>
+                    <circle cx="20" cy="20" r="14" fill="none" stroke="url(#logoGradient)" stroke-width="1.5"
+                        opacity="0.7">
+                    </circle>
+                    <circle cx="20" cy="20" r="10" fill="none" stroke="url(#logoGradient)" stroke-width="1"
+                        opacity="0.5">
+                    </circle>
+                    <circle cx="20" cy="20" r="6" fill="none" stroke="url(#logoGradient)" stroke-width="0.5"
+                        opacity="0.3">
+                    </circle>
+                    <circle cx="20" cy="20" r="3" fill="url(#logoGradient)"></circle>
+                </svg>
+                <span class="logo-text">Digital learn</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="" class="nav-link active">Home</a></li>
+                <li><a href="pages/quiz.html" class="nav-link">Student analytics</a></li>
+                <li><a href="" class="nav-link">Practices</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>👩‍🏫 Teacher Dashboard</h1>
+        <div id="focusAlert" class="alert">⚠ Tab switch detected!</div>
+
+        <section>
+            <h2>Add / View Students</h2>
+            <form id="studentForm">
+                <input id="studentName" placeholder="Name" required>
+                <input id="studentClass" placeholder="Class" required>
+                <button>Add Student</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTable"></tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Create Test</h2>
+            <form id="testForm">
+                <input id="testName" placeholder="Test Name" required>
+                <input id="questionText" placeholder="Question" required>
+                <input id="correctAnswer" placeholder="Correct Answer" required>
+                <button>Add Question</button>
+            </form>
+            <ul id="questionPreview"></ul>
+            <button id="saveTestBtn">Save Test</button>
+        </section>
+
+        <section>
+            <h2>Test Analytics</h2>
+            <div id="analytics"></div>
+        </section>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector("nav ul").classList.toggle("active");
+        }
+
+        /* ---------- Data ---------- */
+        let students = JSON.parse(localStorage.getItem("students") || "[]");
+        let tests = JSON.parse(localStorage.getItem("tests") || "[]");
+        let draftQuestions = [];
+
+        /* ---------- Students ---------- */
+        function renderStudents() {
+            const tbody = document.getElementById("studentTable");
+            tbody.innerHTML = "";
+            students.forEach((s, i) => {
+                tbody.innerHTML += `<tr>
+        <td>${s.name}</td><td>${s.class}</td>
+        <td><button onclick="deleteStudent(${i})">Delete</button></td></tr>`;
+            });
+        }
+        function deleteStudent(i) {
+            students.splice(i, 1);
+            localStorage.setItem("students", JSON.stringify(students));
+            renderStudents();
+        }
+        document.getElementById("studentForm").addEventListener("submit", e => {
+            e.preventDefault();
+            students.push({
+                name: studentName.value,
+                class: studentClass.value,
+                results: {}
+            });
+            localStorage.setItem("students", JSON.stringify(students));
+            renderStudents();
+            e.target.reset();
+        });
+        renderStudents();
+
+        /* ---------- Test Creation ---------- */
+        document.getElementById("testForm").addEventListener("submit", e => {
+            e.preventDefault();
+            draftQuestions.push({
+                question: questionText.value,
+                answer: correctAnswer.value
+            });
+            questionText.value = "";
+            correctAnswer.value = "";
+            renderDraft();
+        });
+        function renderDraft() {
+            const ul = document.getElementById("questionPreview");
+            ul.innerHTML = draftQuestions.map(q => `<li>${q.question} — [${q.answer}]</li>`).join("");
+        }
+        document.getElementById("saveTestBtn").addEventListener("click", () => {
+            if (!testName.value || draftQuestions.length === 0) { alert("Need name & questions"); return; }
+            tests.push({ name: testName.value, questions: [...draftQuestions] });
+            localStorage.setItem("tests", JSON.stringify(tests));
+            draftQuestions = []; renderDraft(); testName.value = "";
+            alert("Test saved!");
+            renderAnalytics();
+        });
+
+        /* ---------- Analytics ---------- */
+        function renderAnalytics() {
+            const container = document.getElementById("analytics");
+            let html = "";
+            if (tests.length === 0) { container.innerHTML = "<p>No tests yet.</p>"; return; }
+            tests.forEach(t => {
+                html += `<h3>${t.name}</h3><ul>`;
+                t.questions.forEach(q => {
+                    let total = 0, correct = 0;
+                    students.forEach(s => {
+                        if (s.results && s.results[t.name]) {
+                            total++;
+                            if (s.results[t.name][q.question] === q.answer) correct++;
+                        }
+                    });
+                    let rate = total ? ((correct / total) * 100).toFixed(1) : 0;
+                    html += `<li>${q.question} — Correct Rate: ${rate}%</li>`;
+                });
+                html += "</ul>";
+            });
+            container.innerHTML = html;
+        }
+        renderAnalytics();
+
+        /* ---------- Tab Switch Alert ---------- */
+        document.addEventListener("visibilitychange", () => {
+            document.getElementById("focusAlert").style.display =
+                document.hidden ? "block" : "none";
+        });
+    </script>
+</body>
+
+</html>

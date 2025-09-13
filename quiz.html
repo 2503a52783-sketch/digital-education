@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Learning Mentor</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#7889d4; text-align:center; margin:0; }
+    h1 { background:#393cca; color:#fff; padding:15px; margin:0; }
+    .tabs { display:flex; justify-content:center; background:#444; }
+    .tabs button { padding:14px; border:none; background:#444; color:white; cursor:pointer; flex:1; }
+    .tabs button:hover { background:#666; }
+    .tab-content { display:none; padding:20px; }
+    .active { display:block; }
+    .subject-btn { margin:5px; padding:10px 20px; background:rgb(31, 14, 122); color:white; border:none; border-radius:5px; cursor:pointer; }
+    .subject-btn:hover { background:#0056b3; }
+    #quizOptions button { display:block; margin:8px auto; padding:10px; width:200px; border:none; border-radius:6px; background:#2196F3; color:white; font-size:16px; cursor:pointer; }
+    #quizOptions button:hover { background:#1976D2; }
+    #result { font-weight:bold; margin-top:10px; }
+    iframe { margin-top:10px; border-radius:10px; }
+    a.download-link { display:inline-block; margin-top:10px; padding:8px 15px; background:#28a745; color:white; text-decoration:none; border-radius:5px; }
+    a.download-link:hover { background:#1e7e34; }
+
+    /* Next button styling */
+    #nextBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #28a745, #4CAF50);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #nextBtn:hover {
+      background: linear-gradient(45deg, #218838, #388E3C);
+    }
+
+    #quizOptions { margin-bottom: 20px; }
+
+    .scorecard { margin-top:20px; padding:15px; border:2px solid #333; border-radius:10px; background:white; display:inline-block; text-align:left; }
+    .feedback-box { margin-bottom:20px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fff; text-align:left; }
+    .grade { font-size:20px; font-weight:bold; margin-top:10px; }
+  </style>
+</head>
+<body>
+
+  <h1>📘 AI Learning Mentor</h1>
+
+  <!-- Subjects (Chemistry first, then Physics, Mathematics, CS) -->
+  <div>
+    <button class="subject-btn" onclick="openSubject('Chemistry')">Chemistry</button>
+    <button class="subject-btn" onclick="openSubject('Physics')">Physics</button>
+    <button class="subject-btn" onclick="openSubject('Mathematics')">Mathematics</button>
+    <button class="subject-btn" onclick="openSubject('Computer Science')">Computer Science</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button onclick="openTab('notes')">Notes</button>
+    <button onclick="openTab('videos')">Videos</button>
+    <button onclick="openTab('quiz')">Quiz</button>
+    <button onclick="openTab('mentor')">AI Mentor</button>
+  </div>
+
+  <!-- Notes -->
+  <div id="notes" class="tab-content">
+    <h3>Notes</h3>
+    <p id="notesContent"></p>
+    <br>
+    <a id="pdfDownload" class="download-link" href="#" target="_blank">📄 Download Notes PDF</a>
+  </div>
+
+  <!-- Videos -->
+  <div id="videos" class="tab-content">
+    <h3>Video Lesson</h3>
+    <iframe id="videoLink" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <!-- Quiz -->
+  <div id="quiz" class="tab-content">
+    <h3>Quiz</h3>
+    <p id="quizQuestion"></p>
+    <div id="quizOptions"></div>
+    <p id="result"></p>
+    <div>
+      <button id="nextBtn" onclick="nextQuestion()">➡ Next Question</button>
+    </div>
+    <div id="scorecard" class="scorecard" style="display:none;"></div>
+  </div>
+
+  <!-- AI Mentor -->
+  <div id="mentor" class="tab-content">
+    <h3>AI Mentor Feedback</h3>
+    <div id="mentorFeedback"></div>
+  </div>
+
+<script>
+let currentSubject="";
+let currentIndex=0;
+let wrongAnswers=[];
+let score=0;
+
+const quizzes={
+  "Mathematics":[
+    {q:"What is 2+2?", options:["3","4","5"], answer:1, tip:"Remember basic addition."},
+    {q:"Derivative of x²?", options:["x","2x","x²"], answer:1, tip:"Power rule: d/dx of x^n = n*x^(n-1)."},
+    {q:"Integral of dx?", options:["x + C","1","0"], answer:0, tip:"The integral of 1 dx is x + C."}
+  ],
+  "Physics":[
+    {q:"Unit of Force?", options:["Newton","Joule","Watt"], answer:0, tip:"Force = mass × acceleration, measured in Newtons."},
+    {q:"Speed of light?", options:["3x10^8 m/s","3x10^6 m/s","3x10^5 km/s"], answer:0, tip:"It’s about 300,000 km/s or 3×10^8 m/s."},
+    {q:"Energy unit?", options:["Joule","Newton","Pascal"], answer:0, tip:"Energy is measured in Joules."}
+  ],
+  "Chemistry":[
+    {q:"H₂O is?", options:["Hydrogen","Oxygen","Water"], answer:2, tip:"2 Hydrogens and 1 Oxygen = Water."},
+    {q:"Atomic number of Carbon?", options:["6","12","14"], answer:0, tip:"Carbon has 6 protons."},
+    {q:"Symbol of Sodium?", options:["Na","So","Sn"], answer:0, tip:"Sodium’s symbol is Na."}
+  ],
+  "Computer Science":[
+    {q:"Binary of 5?", options:["101","111","100"], answer:0, tip:"Convert decimal 5 → binary 101."},
+    {q:"HTML stands for?", options:["HighText Machine Language","HyperText Markup Language","Hyperlink Mark Language"], answer:1, tip:"Correct: HyperText Markup Language."},
+    {q:"Which is not a programming language?", options:["Python","C++","Google"], answer:2, tip:"Google is a company, not a language."}
+  ]
+};
+
+// ✅ Embeddable YouTube links
+const subjectVideos={
+  "Mathematics":"https://www.youtube.com/embed/HEfHFsfGXjs",
+  "Physics":"https://www.youtube.com/embed/h4OnBYrbCjY",
+  "Chemistry":"https://www.youtube.com/embed/FSyAehMdpyI",
+  "Computer Science":"https://www.youtube.com/embed/zOjov-2OZ0E"
+};
+
+function openTab(tab){
+  document.querySelectorAll('.tab-content').forEach(el=>el.style.display="none");
+  document.getElementById(tab).style.display="block";
+}
+
+function openSubject(subject){
+  currentSubject=subject;
+  wrongAnswers=[];
+  currentIndex=0;
+  score=0;
+
+  if(subject==="Mathematics"){ 
+    document.getElementById("notesContent").innerText="Algebra, Geometry, Calculus basics."; 
+    document.getElementById("videoLink").src=subjectVideos.Mathematics; 
+    document.getElementById("pdfDownload").href="https://example.com/fake/mathematics.pdf";
+  }
+  if(subject==="Physics"){ 
+    document.getElementById("notesContent").innerText="Newton's Laws, Motion, Energy."; 
+    document.getElementById("videoLink").src=subjectVideos.Physics; 
+    document.getElementById("pdfDownload").href="https://example.com/fake/physics.pdf";
+  }
+  if(subject==="Chemistry"){ 
+    document.getElementById("notesContent").innerText="Atoms, Molecules, Periodic Table."; 
+    document.getElementById("videoLink").src=subjectVideos.Chemistry; 
+    document.getElementById("pdfDownload").href="https://example.com/fake/chemistry.pdf";
+  }
+  if(subject==="Computer Science"){ 
+    document.getElementById("notesContent").innerText="Programming, Data Structures, Algorithms."; 
+    document.getElementById("videoLink").src=subjectVideos["Computer Science"]; 
+    document.getElementById("pdfDownload").href="https://example.com/fake/computer_science.pdf";
+  }
+
+  loadQuiz();
+  openTab('notes');
+}
+
+function loadQuiz(){
+  let qObj=quizzes[currentSubject][currentIndex];
+  document.getElementById("quizQuestion").innerText=qObj.q;
+  let optDiv=document.getElementById("quizOptions");
+  optDiv.innerHTML="";
+  qObj.options.forEach((opt,i)=>{
+    let btn=document.createElement("button");
+    btn.innerText=opt;
+    btn.onclick=function(){checkAnswer(i)};
+    optDiv.appendChild(btn);
+  });
+  document.getElementById("result").innerText="";
+  document.getElementById("nextBtn").style.display="none";
+}
+
+function checkAnswer(choice){
+  let qObj=quizzes[currentSubject][currentIndex];
+  if(choice===qObj.answer){
+    document.getElementById("result").innerText="✅ Correct!";
+    score++;
+  } else {
+    document.getElementById("result").innerText="❌ Wrong!";
+    wrongAnswers.push(qObj);
+  }
+  document.getElementById("nextBtn").style.display="block";
+}
+
+function nextQuestion(){
+  if(currentIndex<quizzes[currentSubject].length-1){
+    currentIndex++;
+    loadQuiz();
+  } else {
+    // Quiz finished
+    let total = quizzes[currentSubject].length;
+    let wrong = total - score;
+    document.getElementById("quizQuestion").innerText="🎉 Quiz Completed!";
+    document.getElementById("quizOptions").innerHTML="";
+    document.getElementById("result").innerText="";
+    document.getElementById("nextBtn").style.display="none";
+
+    // Grade system
+    let percent = Math.round((score/total)*100);
+    let grade="";
+    if(percent>=90) grade="A+";
+    else if(percent>=75) grade="A";
+    else if(percent>=60) grade="B";
+    else if(percent>=40) grade="C";
+    else grade="F";
+
+    // Show scorecard
+    let scoreDiv=document.getElementById("scorecard");
+    scoreDiv.style.display="block";
+    scoreDiv.innerHTML=`<h3>📊 Scorecard</h3>
+      <b>Total Questions:</b> ${total}<br>
+      <b>Correct:</b> ${score}<br>
+      <b>Wrong:</b> ${wrong}<br>
+      <b>Final Score:</b> ${score}/${total} (${percent}%)<br>
+      <span class="grade">🏅 Grade: ${grade}</span>`;
+
+    // AI Mentor Feedback
+    if(wrongAnswers.length>0){
+      openTab('mentor');
+      let feedbackDiv = document.getElementById("mentorFeedback");
+      feedbackDiv.innerHTML="<h4>Here’s your personalized help 👇</h4>";
+
+      wrongAnswers.forEach((qObj, idx)=>{
+        let div=document.createElement("div");
+        div.className="feedback-box";
+        
+        let html = `<b>Q${idx+1}: ${qObj.q}</b><br>
+                    Correct Answer: ${qObj.options[qObj.answer]}<br>
+                    Mentor Tip: ${qObj.tip}<br><br>
+                    <b>📘 Related Notes:</b> ${document.getElementById("notesContent").innerText}<br>
+                    <b>🎥 Related Video:</b><br>
+                    <iframe width="300" height="180" src="${subjectVideos[currentSubject]}" frameborder="0" allowfullscreen></iframe>`;
+        
+        div.innerHTML = html;
+        feedbackDiv.appendChild(div);
+      });
+    }
+  }
+}
+</script>
+
+</body>
+</html>

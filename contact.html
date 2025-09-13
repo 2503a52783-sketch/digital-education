@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Digital Learn</title>
+    <link href="dI.css" rel="stylesheet">
+</head>
+<body>
+    <div class="geometric-bg"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="dl.html" class="logo">
+                <svg viewBox="0 0 40 40" xmlns="">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1"></stop>
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1"></stop>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient)" stroke-width="2"></circle>
+                    <circle cx="20" cy="20" r="14" fill="none" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.7"></circle>
+                    <circle cx="20" cy="20" r="10" fill="none" stroke="url(#logoGradient)" stroke-width="1" opacity="0.5"></circle>
+                    <circle cx="20" cy="20" r="6" fill="none" stroke="url(#logoGradient)" stroke-width="0.5" opacity="0.3"></circle>
+                    <circle cx="20" cy="20" r="3" fill="url(#logoGradient)"></circle>
+                </svg>
+                <span class="logo-text">Digital Learn</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="home.html" class="nav-link">Home</a></li>
+                <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+                <li><a href="#" class="nav-link">Practices</a></li>
+                <li><a href="contact.html" class="nav-link active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contact Section -->
+    <main style="padding: 120px 20px; max-width: 900px; margin: auto; text-align: center;">
+        <h1 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;">Contact Us</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 40px;">We’d love to hear from you. Reach us via phone or email.</p>
+        
+        <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+            <p style="font-size: 1.2rem; margin: 15px 0;">
+                <strong>Phone:</strong> <a href="tel:978332XXXX" style="color: var(--secondary); text-decoration: none;">978332XXXX</a>
+            </p>
+            <p style="font-size: 1.2rem; margin: 15px 0;">
+                 <strong>Email:</strong> <a href="mailto:digitalxyz@gmail.com" style="color: var(--secondary); text-decoration: none;">digitalxyz@gmail.com</a>
+            </p>
+        </div>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+
+</body>
+</html>
